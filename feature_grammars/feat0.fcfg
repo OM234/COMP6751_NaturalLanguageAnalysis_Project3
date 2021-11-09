@@ -1,0 +1,61 @@
+% start S
+# ###################
+# Grammar Productions
+# ###################
+
+# S expansion productions
+S[NUM=?n, SENT=?s] -> NP[NUM=?n, SENT=?s] VP[NUM=?n, SENT=?s]
+S[SENT=?s] -> S CONJOPPOSING S[SENT=?s]
+S[SENT=?s] -> S[SENT=?s] CONJADDITIVE S[SENT=?s]
+
+
+# NP expansion productions
+NP[NUM=?n, SENT=?s] -> N[NUM=?n, SENT=?s]
+NP[NUM=?n] -> PropN[NUM=?n]
+NP[NUM=?n, SENT=?s] -> Det[NUM=?n] N[NUM=?n, SENT=?s]
+NP[NUM=pl] -> N[NUM=pl]
+NP[NUM=?n] -> Pronoun[NUM=?n]
+
+
+# VP expansion productions
+VP[TENSE=?t, NUM=?n] -> V[SUBCAT=intrans, TENSE=?t, NUM=?n]
+VP[TENSE=?t, NUM=?n, SENT=?s] -> V[SUBCAT=trans, TENSE=?t, NUM=?n] NP[SENT=?s]
+VP[SENT=?s] -> V[+AUX] VP[SENT=?s]
+VP[SENT=negative] -> NOT VP[SENT=positive]
+VP[SENT=positive] -> NOT VP[SENT=negative]
+
+# ###################
+# Lexical Productions
+# ###################
+
+Det[NUM=sg] -> 'this' | 'every' | 'a'
+Det[NUM=pl] -> 'these' | 'all'
+Det -> 'the' | 'some' | 'several'
+
+PropN[NUM=sg]-> 'Kim' | 'Jody'
+
+N[NUM=?n, SENT=?s] -> Adj[SENT=?s] N[NUM=?n]
+N[NUM=sg] -> 'dog' | 'girl' | 'car' | 'child' | 'story' | 'impact'
+N[NUM=pl] -> 'dogs' | 'girls' | 'cars' | 'children'
+
+V[SUBCAT=intrans, TENSE=pres,  NUM=sg] -> 'disappears' | 'walks'
+V[SUBCAT=trans, TENSE=pres, NUM=sg] -> 'sees' | 'likes' | 'has' | 'have' | "'s" | 'is'
+V[SUBCAT=intrans, TENSE=pres,  NUM=pl] -> 'disappear' | 'walk'
+V[SUBCAT=trans, TENSE=pres, NUM=pl] -> 'see' | 'like'
+V[+AUX] -> 'does'
+
+V[SUBCAT=intrans, TENSE=past] -> 'disappeared' | 'walked'
+V[SUBCAT=trans, TENSE=past] -> 'saw' | 'liked'
+
+Pronoun[NUM=sg] -> 'it' | 'this'
+
+CONJOPPOSING -> 'but' | COMMA CONJOPPOSING
+CONJADDITIVE -> 'and'
+
+NOT -> 'not'
+
+Adj[SENT=positive] -> 'compelling' | 'gut-wrenching'
+
+Adj[SENT=negative] -> 'low' | 'gut-wrenching'
+
+COMMA -> ','
